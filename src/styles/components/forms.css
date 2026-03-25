@@ -1,0 +1,39 @@
+.login-form input,
+.login-form select,
+.create-room-form input,
+.chat-input-row input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #262626;
+  background: #111111;
+  color: #ffffff;
+  outline: none;
+}
+
+.login-form input:focus,
+.login-form select:focus,
+.create-room-form input:focus,
+.chat-input-row input:focus {
+  border-color: #5b8cff;
+}
+
+.login-form button[disabled],
+.create-room-form button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 10px;
+}
+
+.chat-input-wrap {
+  position: relative;
+  flex: 1;
+}
+
+.chat-input-wrap input {
+  width: 100%;
+}

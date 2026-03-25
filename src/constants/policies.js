@@ -1,0 +1,1 @@
+export const POLICY_VERSION = "v1.0";

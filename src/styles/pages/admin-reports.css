@@ -1,0 +1,2716 @@
+/* Nite's Watch- MODERATION COMMAND CENTER V3.1 */
+:root {
+  --panel-bg: #05070a;
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --admin-accent: #818cf8;
+}
+
+/* Nite's Watch - MODERATION COMMAND CENTER V3.1 */
+:root {
+  --panel-bg: #05070a;
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --admin-accent: #818cf8;
+}
+
+/* BACKDROP - Ensures the modal pops up over everything */
+.admin-report-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.admin-report-modal {
+  width: min(1100px, 95vw);
+  height: 85vh;
+  background: var(--panel-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  display: grid;
+  grid-template-rows: auto 1fr auto; 
+  overflow: hidden;
+  box-shadow: 0 50px 100px rgba(0,0,0,0.9);
+}
+
+/* HEADER */
+/* Nite's Watch - MODERATION COMMAND CENTER V3.2 (BETA READY) */
+
+/* HEADER FIXES */
+.admin-report-modal-top {
+    padding: 24px 40px;
+    background: linear-gradient(to right, rgba(129, 140, 248, 0.05), transparent);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.admin-report-modal-top-right {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Space between Status and Close button */
+}
+
+/* SIDEBAR RE-STRUCTURE */
+.admin-report-sidebar {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 32px 24px;
+    border-left: 1px solid var(--glass-border);
+}
+
+.sidebar-group {
+    margin-bottom: 32px;
+}
+
+.sidebar-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    color: #475569;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sidebar-label::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--glass-border);
+}
+
+/* ENFORCEMENT BUTTONS */
+.sidebar-v-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ghost-button {
+    background: #0f172a;
+    border: 1px solid var(--glass-border);
+    color: #94a3b8;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.ghost-button:hover:not(:disabled) {
+    background: #1e293b;
+    border-color: #334155;
+    color: #f1f5f9;
+    transform: translateX(4px); /* Subtle slide effect */
+}
+
+.ghost-button.danger {
+    color: #f87171;
+    border-color: rgba(239, 68, 68, 0.2);
+}
+
+.ghost-button.danger:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: #ef4444;
+}
+
+/* ==========================================================================
+  Nite's Watch - ADMIN & MODERATION SYSTEM (V3.6)
+  Includes: Dashboard, Report Feed, Modals, and Suspension 2.0
+  ==========================================================================
+*/
+
+:root {
+  --admin-bg: #05070a;
+  --card-bg: #111318;
+  --nested-bg: #1a1d23;
+  --accent-blue: #3b82f6;
+  --accent-red: #ef4444;
+  --accent-green: #10b981;
+  --admin-accent: #818cf8;
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --text-muted: #64748b;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+/* --- 1. SUSPENSION CARD 2.0 (Sidebar/Detail Component) --- */
+.admin-suspension-card {
+    background: #05070a;
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-suspension-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+}
+
+.admin-suspension-card.is-clear::before { background: var(--accent-green); }
+.admin-suspension-card.is-suspended::before { background: var(--accent-red); }
+
+.admin-suspension-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.admin-suspension-row:last-child { border: none; }
+
+.admin-suspension-row span {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.admin-suspension-row strong {
+    font-size: 12px;
+    font-family: var(--font-mono);
+    color: #e2e8f0;
+}
+
+/* --- 2. THE REPORT FEED (ROW ARCHITECTURE) --- */
+.admin-reports-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.report-summary-card {
+  background: #0d111a;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: 8px 1fr 280px; 
+  overflow: hidden;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.report-summary-card:hover {
+  border-color: rgba(129, 140, 248, 0.4);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  transform: translateX(4px);
+}
+
+/* Status Accents for Main Feed */
+.report-card-accent { background: #334155; }
+.report-summary-card.status-open .report-card-accent { background: #fbbf24; }
+.report-summary-card.status-reviewed .report-card-accent { background: var(--accent-green); }
+.report-summary-card.status-escalated .report-card-accent { background: var(--accent-red); }
+
+/* --- 3. ACTION SIDEBAR & DANGER ZONE --- */
+.report-card-actions {
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 1px solid var(--glass-border);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.ghost-button {
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  color: #94a3b8;
+  padding: 10px 16px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+
+.ghost-button.danger-zone {
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(239, 68, 68, 0.03) 10px,
+    rgba(239, 68, 68, 0.03) 20px
+  );
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+
+.ghost-button.danger-zone:hover {
+  border-color: var(--accent-red);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* --- 4. MODAL & DATA BLOCKS --- */
+.admin-report-modal {
+  width: min(1100px, 95vw);
+  height: 85vh;
+  background: var(--admin-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  display: grid;
+  grid-template-rows: auto 1fr auto; 
+  overflow: hidden;
+}
+
+.admin-report-sidebar {
+  background: rgba(255, 255, 255, 0.01);
+  padding: 24px;
+  border-left: 1px solid var(--glass-border);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.admin-report-block p {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: #e2e8f0;
+}
+.admin-report-type-badge {
+  font-size: 10px;
+  background: rgba(129, 140, 248, 0.1);
+  color: var(--admin-accent);
+  padding: 4px 8px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+/* BODY LAYOUT */
+.admin-report-modal-body {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  overflow: hidden;
+}
+
+.admin-report-content-scroll {
+  overflow-y: auto;
+  padding: 40px;
+  border-right: 1px solid var(--glass-border);
+}
+
+.admin-report-sidebar {
+  background: rgba(255, 255, 255, 0.01);
+  padding: 32px 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* DATA BLOCKS & TIMELINE */
+.admin-report-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+  margin-top: 12px;
+}
+
+.admin-report-label {
+  display: block;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.monospace-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  word-break: break-all;
+}
+
+.admin-report-history-list {
+  border-left: 2px solid var(--glass-border);
+  margin-left: 10px;
+  padding-left: 24px;
+  margin-top: 20px;
+}
+
+.admin-report-history-item {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.history-dot {
+  position: absolute;
+  left: -31px;
+  top: 6px;
+  width: 12px;
+  height: 12px;
+  background: var(--panel-bg);
+  border: 2px solid var(--admin-accent);
+  border-radius: 50%;
+}
+
+/* SIDEBAR COMPONENTS */
+.sidebar-group h4 {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 12px;
+}
+
+.sidebar-stats-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  background: rgba(255,255,255,0.03);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+.sidebar-v-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* FORM ELEMENTS */
+.admin-moderator-notes-input {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  color: white;
+  padding: 12px;
+  width: 100%;
+  resize: none;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+
+/* FOOTER */
+.admin-report-modal-actions {
+  padding: 24px 40px;
+  background: #0d111a;
+  border-top: 1px solid var(--glass-border);
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-right-group {
+  display: flex;
+  gap: 12px;
+}
+/* ADMIN PAGE LAYOUT */
+.admin-page-container {
+  padding: 60px 5vw;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.admin-page-header h1 {
+  font-size: 2.5rem;
+  margin: 12px 0;
+}
+
+/* STATS BAR */
+.admin-stats-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  margin: 40px 0;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  padding: 24px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-card span {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.stat-card strong {
+  font-size: 2rem;
+  color: #fff;
+}
+
+/* TABS */
+.admin-filter-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 16px;
+}
+
+.filter-tab {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  padding: 8px 16px;
+  cursor: pointer;
+  text-transform: capitalize;
+  border-radius: 8px;
+}
+
+.filter-tab.is-active {
+  background: rgba(129, 140, 248, 0.1);
+  color: var(--admin-accent);
+}
+
+/* GRID */
+.admin-reports-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.report-summary-card {
+  background: #0d111a;
+  border: 1px solid var(--glass-border);
+  padding: 24px;
+  border-radius: 20px;
+  transition: transform 0.2s;
+}
+
+.report-summary-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--admin-accent);
+}
+.admin-reports-page {
+  min-height: 100vh;
+  background: #05070a; /* Deep dark background */
+  color: #fff;
+  padding-bottom: 100px;
+}
+
+.admin-reports-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+
+.admin-reports-hero {
+  margin-bottom: 48px;
+}
+
+.admin-reports-eyebrow {
+  color: #818cf8;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+/* Stats Bar */
+.admin-reports-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.admin-stat-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 20px;
+  border-radius: 16px;
+}
+
+.admin-stat-label {
+  display: block;
+  font-size: 11px;
+  color: #64748b;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+/* Filter Chips */
+.admin-reports-filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  overflow-x: auto;
+}
+
+.admin-filter-chip {
+  padding: 8px 20px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.admin-filter-chip.is-active {
+  background: rgba(129, 140, 248, 0.1);
+  border-color: rgba(129, 140, 248, 0.3);
+  color: #c7d2fe;
+}
+/* 1. STATUS-SPECIFIC THEMING 
+   This matches your REPORT_STATUSES from the service layer */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge.open { 
+    background: rgba(245, 158, 11, 0.1); 
+    color: #fbbf24; 
+}
+.status-badge.reviewed { 
+    background: rgba(16, 185, 129, 0.1); 
+    color: #34d399; 
+}
+.status-badge.dismissed { 
+    background: rgba(148, 163, 184, 0.1); 
+    color: #94a3b8; 
+}
+.status-badge.escalated { 
+    background: rgba(239, 68, 68, 0.1); 
+    color: #f87171; 
+    animation: pulse-border 2s infinite;
+}
+
+/* 2. REPEAT OFFENDER ALERT
+   Targeting that logic in ReportQueue.jsx */
+.admin-repeat-offender-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #450a0a;
+    border: 1px solid #dc2626;
+    color: #fecaca;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    width: fit-content;
+}
+
+/* 3. MODERATION TIMELINE STYLING
+   Making the Modal history feel "logged" */
+.admin-report-history-item .history-type {
+    font-weight: 600;
+    color: var(--admin-accent);
+    margin-right: 8px;
+}
+
+.admin-report-history-item .history-note {
+    display: block;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin-top: 4px;
+    font-style: italic;
+    border-left: 2px solid rgba(255,255,255,0.05);
+    padding-left: 10px;
+}
+
+/* 4. INTERACTION & BUTTONS
+   Standardizing the action footer */
+.admin-btn {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.admin-btn-primary { 
+    background: var(--admin-accent); 
+    color: white; 
+}
+.admin-btn-secondary { 
+    background: rgba(255,255,255,0.05); 
+    border-color: var(--glass-border);
+    color: white;
+}
+.admin-btn-danger { 
+    background: rgba(239, 68, 68, 0.1); 
+    color: #f87171;
+    border-color: rgba(239, 68, 68, 0.2);
+}
+
+.admin-btn:hover:not(:disabled) {
+    filter: brightness(1.2);
+    transform: translateY(-1px);
+}
+
+.admin-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* 5. ANIMATIONS */
+@keyframes pulse-border {
+    0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+/* DASHBOARD LAYOUT REFACTOR */
+.admin-reports-shell {
+  max-width: 1400px; /* Wider for professional use */
+  margin: 0 auto;
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* THE REPORT FEED - No more bleeding */
+.admin-reports-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Tight, controlled spacing */
+}
+
+/* THE REPORT CARD - The "Industry Standard" Unit */
+.report-summary-card {
+  background: #0d111a;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: 8px 1fr 280px; /* Accent bar | Main Info | Action Sidebar */
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.report-summary-card:hover {
+  border-color: rgba(129, 140, 248, 0.4);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+}
+
+/* Status-based Left Accent Bar */
+.report-card-accent {
+  background: #334155; /* Default */
+}
+.report-summary-card.status-open .report-card-accent { background: #fbbf24; }
+.report-summary-card.status-escalated .report-card-accent { background: #f87171; }
+
+/* MAIN INFO SECTION */
+.report-card-main {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.report-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  padding-bottom: 12px;
+}
+
+.report-card-header h3 {
+  font-size: 1.1rem;
+  margin: 0;
+  color: #fff;
+  text-transform: capitalize;
+}
+
+/* DATA STRIP - Horizontal density */
+.report-card-data-strip {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.data-point {
+  display: flex;
+  flex-direction: column;
+}
+
+.data-point label {
+  font-size: 10px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.data-point span {
+  font-size: 0.9rem;
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+/* ACTION SIDEBAR */
+.report-card-actions {
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 1px solid var(--glass-border);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* QUICK PREVIEW TEXT */
+.report-preview-text {
+  background: rgba(0,0,0,0.2);
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #94a3b8;
+  border-left: 2px solid var(--admin-accent);
+  margin-top: 8px;
+}
+/* Container Separation */
+.admin-report-card {
+  background: #0a0a0a; /* Slightly lighter than pure black */
+  border-left: 2px solid #333; /* The vertical anchor */
+  padding: 24px;
+  margin-bottom: 32px; /* Large gap between reports */
+  border-radius: 0; /* Keep those sharp editorial corners */
+  transition: border-color 0.2s ease;
+}
+
+/* State-based coloring */
+.admin-report-card.is-open {
+  border-left-color: #007bff; /* Blue for active reports */
+}
+
+.admin-report-card.has-deleted-message {
+  border-left-color: #ff4d4d; /* Red for high-priority/deleted items */
+}
+
+/* Header styling for better hierarchy */
+.admin-report-type {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.admin-report-reason-row h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0 0 16px 0;
+  color: #eee;
+}
+
+/* Grid layout for the metadata */
+.admin-report-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid #222;
+  border-bottom: 1px solid #222;
+  margin-bottom: 16px;
+}
+
+.admin-report-label {
+  display: block;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+/* Action row cleanup */
+.admin-report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px dotted #333;
+}
+/* Individual Card Container */
+.admin-report-card {
+  /* Subtle elevation vs the page background */
+  background-color: #0d0d0d; 
+  border: 1px solid #1a1a1a; 
+  
+  /* Sharp editorial corners */
+  border-radius: 4px; 
+  
+  /* Vertical separation */
+  margin-bottom: 40px; 
+  padding: 32px;
+  
+  /* Subtle glow/shadow to lift it off the black */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+/* Accent border for priority/status */
+.admin-report-card.is-open {
+  border-top: 2px solid #007bff; 
+}
+
+.admin-report-card.has-deleted-message {
+  border-top: 2px solid #ff4d4d;
+}
+
+/* Tightening the internal grid */
+.admin-report-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 24px;
+  margin: 24px 0;
+  padding: 20px 0;
+  border-top: 1px solid #1a1a1a;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+/* Typography refinements */
+.admin-report-label {
+  color: #555;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05rem;
+  margin-bottom: 8px;
+}
+
+.admin-report-block p {
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace; /* Great for IDs */
+  font-size: 0.85rem;
+  word-break: break-all;
+}
+
+/* Notes Section */
+.admin-report-notes {
+  margin-top: 20px;
+  padding: 16px;
+  background: #121212;
+  border-radius: 4px;
+}
+
+/* Button Container */
+.admin-report-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+  justify-content: flex-start;
+}
+/* Main Card Container */
+.admin-report-card {
+  /* Shift from #0d0d0d to #141414 for better visibility */
+  background-color: #141414; 
+  
+  /* Brighten the border to a more defined gray */
+  border: 1px solid #2a2a2a; 
+  
+  margin-bottom: 48px; 
+  padding: 32px;
+  border-radius: 4px;
+  
+  /* Add a very subtle outer glow to define the silhouette */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* Internal Section Boxes (Notes/Moderation) */
+.admin-report-notes {
+  margin-top: 16px;
+  padding: 20px;
+  
+  /* Lighter than the card bg to create nested depth */
+  background: #1c1c1c; 
+  border: 1px solid #262626;
+  border-radius: 4px;
+}
+
+/* Status-specific highlights - making them punchier */
+.admin-report-card.is-open {
+  border-top: 3px solid #3b82f6; /* A brighter blue */
+}
+
+.admin-report-card.has-deleted-message {
+  border-top: 3px solid #ef4444; /* A punchier red */
+}
+
+/* Make the labels stand out more */
+.admin-report-label {
+  color: #888; /* Brightened from #555 */
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Brighten the main text content */
+.admin-report-block p, 
+.admin-report-notes p {
+  color: #e5e5e5; /* Off-white for high readability */
+}
+/* Nite's Watch - MODERATION COMMAND CENTER V3.1 */
+:root {
+  --admin-bg: #05070a;
+  --card-bg: #111318;
+  --nested-bg: #1a1d23;
+  --accent-blue: #3b82f6;
+  --accent-red: #ef4444;
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --text-muted: #64748b;
+}
+
+/* THE CARD UNIT */
+.admin-report-card {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-top: 3px solid #334155; /* Default Neutral Accent */
+  padding: 32px;
+  margin-bottom: 40px;
+  border-radius: 4px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.admin-report-card.is-open { border-top-color: var(--accent-blue); }
+.admin-report-card.has-deleted-message { border-top-color: var(--accent-red); }
+
+/* HEADER LOGIC */
+.admin-report-type {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.admin-report-reason-row h3 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 20px 0;
+  text-transform: capitalize;
+}
+
+/* MODULAR DATA BLOCKS */
+.admin-report-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.admin-report-block {
+  background: var(--nested-bg);
+  border: 1px solid var(--glass-border);
+  padding: 12px 16px;
+  border-radius: 2px;
+}
+
+.admin-report-label {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  margin-bottom: 6px;
+  padding-bottom: 4px;
+}
+
+.admin-report-block p {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: #e2e8f0;
+  word-break: break-all;
+}
+
+/* NOTE CONTAINERS */
+.admin-report-notes {
+  background: rgba(0,0,0,0.2);
+  border-left: 2px solid var(--glass-border);
+  padding: 16px 20px;
+  margin-top: 12px;
+  border-radius: 0 4px 4px 0;
+}
+
+/* ACTIONS */
+.admin-report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px dotted var(--glass-border);
+}
+
+.ghost-button {
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  color: #94a3b8;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.ghost-button:hover {
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  border-color: #444;
+}
+/* ADMIN STATUS HEADER */
+.admin-report-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.admin-status-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+/* THE STATUS PILL */
+.status-pill {
+  padding: 4px 12px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 2px;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.05);
+  color: #94a3b8;
+}
+
+/* STATE VARIATIONS */
+.status-pill.is-open {
+  background: rgba(59, 130, 246, 0.1);
+  color: #60a5fa;
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.status-pill.is-reviewed {
+  background: rgba(16, 185, 129, 0.1);
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.status-pill.is-escalated {
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.3);
+  animation: admin-pulse 2s infinite;
+}
+
+@keyframes admin-pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+.admin-report-block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.admin-copy-toast {
+  font-size: 0.6rem;
+  color: #34d399; /* Green success color */
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.admin-id-text {
+  font-family: 'Courier New', Courier, monospace; /* Monospace for IDs */
+  font-size: 0.75rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-report-block:hover .admin-id-text {
+  color: #fff; /* Highlight the ID on hover */
+}
+.admin-grid-container {
+  margin-bottom: 24px;
+}
+
+.admin-grid-instruction {
+  font-size: 0.65rem;
+  color: #4b5563; /* Subtle gray */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 4px;
+}
+
+.admin-copy-status-area {
+  min-width: 60px;
+  text-align: right;
+}
+
+.admin-copy-hint-text {
+  font-size: 0.55rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  font-weight: 800;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.admin-report-block.is-copyable:hover .admin-copy-hint-text {
+  opacity: 1;
+}
+
+.admin-report-block.was-copied {
+  border-color: rgba(52, 211, 153, 0.4); /* Green border flash */
+}
+
+.admin-copy-toast {
+  font-size: 0.6rem;
+  color: #34d399;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+
+
+/* BACKDROP - Ensures the modal pops up over everything */
+.admin-report-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.admin-report-modal {
+  width: min(1100px, 95vw);
+  height: 85vh;
+  background: var(--panel-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  display: grid;
+  grid-template-rows: auto 1fr auto; 
+  overflow: hidden;
+  box-shadow: 0 50px 100px rgba(0,0,0,0.9);
+}
+
+/* HEADER */
+.admin-report-modal-top {
+  padding: 24px 40px;
+  border-bottom: 1px solid var(--glass-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-report-type-badge {
+  font-size: 10px;
+  background: rgba(129, 140, 248, 0.1);
+  color: var(--admin-accent);
+  padding: 4px 8px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+/* BODY LAYOUT */
+.admin-report-modal-body {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  overflow: hidden;
+}
+
+.admin-report-content-scroll {
+  overflow-y: auto;
+  padding: 40px;
+  border-right: 1px solid var(--glass-border);
+}
+
+.admin-report-sidebar {
+  background: rgba(255, 255, 255, 0.01);
+  padding: 32px 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* DATA BLOCKS & TIMELINE */
+.admin-report-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+  margin-top: 12px;
+}
+
+.admin-report-label {
+  display: block;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.monospace-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  word-break: break-all;
+}
+
+.admin-report-history-list {
+  border-left: 2px solid var(--glass-border);
+  margin-left: 10px;
+  padding-left: 24px;
+  margin-top: 20px;
+}
+
+.admin-report-history-item {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.history-dot {
+  position: absolute;
+  left: -31px;
+  top: 6px;
+  width: 12px;
+  height: 12px;
+  background: var(--panel-bg);
+  border: 2px solid var(--admin-accent);
+  border-radius: 50%;
+}
+
+/* SIDEBAR COMPONENTS */
+.sidebar-group h4 {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 12px;
+}
+
+.sidebar-stats-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  background: rgba(255,255,255,0.03);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+.sidebar-v-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* FORM ELEMENTS */
+.admin-moderator-notes-input {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  color: white;
+  padding: 12px;
+  width: 100%;
+  resize: none;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+
+/* FOOTER */
+.admin-report-modal-actions {
+  padding: 24px 40px;
+  background: #0d111a;
+  border-top: 1px solid var(--glass-border);
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-right-group {
+  display: flex;
+  gap: 12px;
+}
+/* ADMIN PAGE LAYOUT */
+.admin-page-container {
+  padding: 60px 5vw;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.admin-page-header h1 {
+  font-size: 2.5rem;
+  margin: 12px 0;
+}
+
+/* STATS BAR */
+.admin-stats-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  margin: 40px 0;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  padding: 24px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-card span {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.stat-card strong {
+  font-size: 2rem;
+  color: #fff;
+}
+
+/* TABS */
+.admin-filter-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 16px;
+}
+
+.filter-tab {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  padding: 8px 16px;
+  cursor: pointer;
+  text-transform: capitalize;
+  border-radius: 8px;
+}
+
+.filter-tab.is-active {
+  background: rgba(129, 140, 248, 0.1);
+  color: var(--admin-accent);
+}
+
+/* GRID */
+.admin-reports-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.report-summary-card {
+  background: #0d111a;
+  border: 1px solid var(--glass-border);
+  padding: 24px;
+  border-radius: 20px;
+  transition: transform 0.2s;
+}
+
+.report-summary-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--admin-accent);
+}
+.admin-reports-page {
+  min-height: 100vh;
+  background: #05070a; /* Deep dark background */
+  color: #fff;
+  padding-bottom: 100px;
+}
+
+.admin-reports-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+
+.admin-reports-hero {
+  margin-bottom: 48px;
+}
+
+.admin-reports-eyebrow {
+  color: #818cf8;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+/* Stats Bar */
+.admin-reports-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.admin-stat-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 20px;
+  border-radius: 16px;
+}
+
+.admin-stat-label {
+  display: block;
+  font-size: 11px;
+  color: #64748b;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+/* Filter Chips */
+.admin-reports-filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  overflow-x: auto;
+}
+
+.admin-filter-chip {
+  padding: 8px 20px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.admin-filter-chip.is-active {
+  background: rgba(129, 140, 248, 0.1);
+  border-color: rgba(129, 140, 248, 0.3);
+  color: #c7d2fe;
+}
+/* 1. STATUS-SPECIFIC THEMING 
+   This matches your REPORT_STATUSES from the service layer */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge.open { 
+    background: rgba(245, 158, 11, 0.1); 
+    color: #fbbf24; 
+}
+.status-badge.reviewed { 
+    background: rgba(16, 185, 129, 0.1); 
+    color: #34d399; 
+}
+.status-badge.dismissed { 
+    background: rgba(148, 163, 184, 0.1); 
+    color: #94a3b8; 
+}
+.status-badge.escalated { 
+    background: rgba(239, 68, 68, 0.1); 
+    color: #f87171; 
+    animation: pulse-border 2s infinite;
+}
+
+/* 2. REPEAT OFFENDER ALERT
+   Targeting that logic in ReportQueue.jsx */
+.admin-repeat-offender-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #450a0a;
+    border: 1px solid #dc2626;
+    color: #fecaca;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    width: fit-content;
+}
+
+/* 3. MODERATION TIMELINE STYLING
+   Making the Modal history feel "logged" */
+.admin-report-history-item .history-type {
+    font-weight: 600;
+    color: var(--admin-accent);
+    margin-right: 8px;
+}
+
+.admin-report-history-item .history-note {
+    display: block;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin-top: 4px;
+    font-style: italic;
+    border-left: 2px solid rgba(255,255,255,0.05);
+    padding-left: 10px;
+}
+
+/* 4. INTERACTION & BUTTONS
+   Standardizing the action footer */
+.admin-btn {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.admin-btn-primary { 
+    background: var(--admin-accent); 
+    color: white; 
+}
+.admin-btn-secondary { 
+    background: rgba(255,255,255,0.05); 
+    border-color: var(--glass-border);
+    color: white;
+}
+.admin-btn-danger { 
+    background: rgba(239, 68, 68, 0.1); 
+    color: #f87171;
+    border-color: rgba(239, 68, 68, 0.2);
+}
+
+.admin-btn:hover:not(:disabled) {
+    filter: brightness(1.2);
+    transform: translateY(-1px);
+}
+
+.admin-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* 5. ANIMATIONS */
+@keyframes pulse-border {
+    0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+/* DASHBOARD LAYOUT REFACTOR */
+.admin-reports-shell {
+  max-width: 1400px; /* Wider for professional use */
+  margin: 0 auto;
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* THE REPORT FEED - No more bleeding */
+.admin-reports-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Tight, controlled spacing */
+}
+
+/* THE REPORT CARD - The "Industry Standard" Unit */
+.report-summary-card {
+  background: #0d111a;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: 8px 1fr 280px; /* Accent bar | Main Info | Action Sidebar */
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.report-summary-card:hover {
+  border-color: rgba(129, 140, 248, 0.4);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+}
+
+/* Status-based Left Accent Bar */
+.report-card-accent {
+  background: #334155; /* Default */
+}
+.report-summary-card.status-open .report-card-accent { background: #fbbf24; }
+.report-summary-card.status-escalated .report-card-accent { background: #f87171; }
+
+/* MAIN INFO SECTION */
+.report-card-main {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.report-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  padding-bottom: 12px;
+}
+
+.report-card-header h3 {
+  font-size: 1.1rem;
+  margin: 0;
+  color: #fff;
+  text-transform: capitalize;
+}
+
+/* DATA STRIP - Horizontal density */
+.report-card-data-strip {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.data-point {
+  display: flex;
+  flex-direction: column;
+}
+
+.data-point label {
+  font-size: 10px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.data-point span {
+  font-size: 0.9rem;
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+/* ACTION SIDEBAR */
+.report-card-actions {
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 1px solid var(--glass-border);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* QUICK PREVIEW TEXT */
+.report-preview-text {
+  background: rgba(0,0,0,0.2);
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #94a3b8;
+  border-left: 2px solid var(--admin-accent);
+  margin-top: 8px;
+}
+/* Container Separation */
+.admin-report-card {
+  background: #0a0a0a; /* Slightly lighter than pure black */
+  border-left: 2px solid #333; /* The vertical anchor */
+  padding: 24px;
+  margin-bottom: 32px; /* Large gap between reports */
+  border-radius: 0; /* Keep those sharp editorial corners */
+  transition: border-color 0.2s ease;
+}
+
+/* State-based coloring */
+.admin-report-card.is-open {
+  border-left-color: #007bff; /* Blue for active reports */
+}
+
+.admin-report-card.has-deleted-message {
+  border-left-color: #ff4d4d; /* Red for high-priority/deleted items */
+}
+
+/* Header styling for better hierarchy */
+.admin-report-type {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.admin-report-reason-row h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0 0 16px 0;
+  color: #eee;
+}
+
+/* Grid layout for the metadata */
+.admin-report-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid #222;
+  border-bottom: 1px solid #222;
+  margin-bottom: 16px;
+}
+
+.admin-report-label {
+  display: block;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+/* Action row cleanup */
+.admin-report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px dotted #333;
+}
+/* Individual Card Container */
+.admin-report-card {
+  /* Subtle elevation vs the page background */
+  background-color: #0d0d0d; 
+  border: 1px solid #1a1a1a; 
+  
+  /* Sharp editorial corners */
+  border-radius: 4px; 
+  
+  /* Vertical separation */
+  margin-bottom: 40px; 
+  padding: 32px;
+  
+  /* Subtle glow/shadow to lift it off the black */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+/* Accent border for priority/status */
+.admin-report-card.is-open {
+  border-top: 2px solid #007bff; 
+}
+
+.admin-report-card.has-deleted-message {
+  border-top: 2px solid #ff4d4d;
+}
+
+/* Tightening the internal grid */
+.admin-report-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 24px;
+  margin: 24px 0;
+  padding: 20px 0;
+  border-top: 1px solid #1a1a1a;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+/* Typography refinements */
+.admin-report-label {
+  color: #555;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05rem;
+  margin-bottom: 8px;
+}
+
+.admin-report-block p {
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace; /* Great for IDs */
+  font-size: 0.85rem;
+  word-break: break-all;
+}
+
+/* Notes Section */
+.admin-report-notes {
+  margin-top: 20px;
+  padding: 16px;
+  background: #121212;
+  border-radius: 4px;
+}
+
+/* Button Container */
+.admin-report-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+  justify-content: flex-start;
+}
+/* Main Card Container */
+.admin-report-card {
+  /* Shift from #0d0d0d to #141414 for better visibility */
+  background-color: #141414; 
+  
+  /* Brighten the border to a more defined gray */
+  border: 1px solid #2a2a2a; 
+  
+  margin-bottom: 48px; 
+  padding: 32px;
+  border-radius: 4px;
+  
+  /* Add a very subtle outer glow to define the silhouette */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* Internal Section Boxes (Notes/Moderation) */
+.admin-report-notes {
+  margin-top: 16px;
+  padding: 20px;
+  
+  /* Lighter than the card bg to create nested depth */
+  background: #1c1c1c; 
+  border: 1px solid #262626;
+  border-radius: 4px;
+}
+
+/* Status-specific highlights - making them punchier */
+.admin-report-card.is-open {
+  border-top: 3px solid #3b82f6; /* A brighter blue */
+}
+
+.admin-report-card.has-deleted-message {
+  border-top: 3px solid #ef4444; /* A punchier red */
+}
+
+/* Make the labels stand out more */
+.admin-report-label {
+  color: #888; /* Brightened from #555 */
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Brighten the main text content */
+.admin-report-block p, 
+.admin-report-notes p {
+  color: #e5e5e5; /* Off-white for high readability */
+}
+/* Nite's Watch - MODERATION COMMAND CENTER V3.1 */
+:root {
+  --admin-bg: #05070a;
+  --card-bg: #111318;
+  --nested-bg: #1a1d23;
+  --accent-blue: #3b82f6;
+  --accent-red: #ef4444;
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --text-muted: #64748b;
+}
+
+/* THE CARD UNIT */
+.admin-report-card {
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-top: 3px solid #334155; /* Default Neutral Accent */
+  padding: 32px;
+  margin-bottom: 40px;
+  border-radius: 4px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.admin-report-card.is-open { border-top-color: var(--accent-blue); }
+.admin-report-card.has-deleted-message { border-top-color: var(--accent-red); }
+
+/* HEADER LOGIC */
+.admin-report-type {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.admin-report-reason-row h3 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 20px 0;
+  text-transform: capitalize;
+}
+
+/* MODULAR DATA BLOCKS */
+.admin-report-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.admin-report-block {
+  background: var(--nested-bg);
+  border: 1px solid var(--glass-border);
+  padding: 12px 16px;
+  border-radius: 2px;
+}
+
+.admin-report-label {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  margin-bottom: 6px;
+  padding-bottom: 4px;
+}
+
+.admin-report-block p {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: #e2e8f0;
+  word-break: break-all;
+}
+
+/* NOTE CONTAINERS */
+.admin-report-notes {
+  background: rgba(0,0,0,0.2);
+  border-left: 2px solid var(--glass-border);
+  padding: 16px 20px;
+  margin-top: 12px;
+  border-radius: 0 4px 4px 0;
+}
+
+/* ACTIONS */
+.admin-report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px dotted var(--glass-border);
+}
+
+.ghost-button {
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  color: #94a3b8;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.ghost-button:hover {
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  border-color: #444;
+}
+/* ADMIN STATUS HEADER */
+.admin-report-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.admin-status-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+/* THE STATUS PILL */
+.status-pill {
+  padding: 4px 12px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 2px;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.05);
+  color: #94a3b8;
+}
+
+/* STATE VARIATIONS */
+.status-pill.is-open {
+  background: rgba(59, 130, 246, 0.1);
+  color: #60a5fa;
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.status-pill.is-reviewed {
+  background: rgba(16, 185, 129, 0.1);
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.status-pill.is-escalated {
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.3);
+  animation: admin-pulse 2s infinite;
+}
+
+@keyframes admin-pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+.admin-report-block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.admin-copy-toast {
+  font-size: 0.6rem;
+  color: #34d399; /* Green success color */
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.admin-id-text {
+  font-family: 'Courier New', Courier, monospace; /* Monospace for IDs */
+  font-size: 0.75rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-report-block:hover .admin-id-text {
+  color: #fff; /* Highlight the ID on hover */
+}
+.admin-grid-container {
+  margin-bottom: 24px;
+}
+
+.admin-grid-instruction {
+  font-size: 0.65rem;
+  color: #4b5563; /* Subtle gray */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 4px;
+}
+
+.admin-copy-status-area {
+  min-width: 60px;
+  text-align: right;
+}
+
+.admin-copy-hint-text {
+  font-size: 0.55rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  font-weight: 800;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.admin-report-block.is-copyable:hover .admin-copy-hint-text {
+  opacity: 1;
+}
+
+.admin-report-block.was-copied {
+  border-color: rgba(52, 211, 153, 0.4); /* Green border flash */
+}
+
+.admin-copy-toast {
+  font-size: 0.6rem;
+  color: #34d399;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+/* Tighter Sidebar Spacing */
+.admin-report-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Reduced from previous passes */
+}
+
+/* The Grid Alignment for Data */
+.suspension-info-grid {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 8px 12px;
+    align-items: baseline;
+}
+
+.suspension-info-grid label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+/* Dangerous Action Styling */
+.ghost-button.danger-zone {
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(239, 68, 68, 0.03) 10px,
+        rgba(239, 68, 68, 0.03) 20px
+    );
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+}
+/*Nite's Watch - ADMIN & MODERATION SYSTEM (V3.5)
+  Scope: Dashboard, Report Feed, Modals, and Enforcement UI
+  ==========================================================================
+*/
+
+:root {
+  --admin-bg: #05070a;
+  --card-bg: #111318;
+  --nested-bg: #1a1d23;
+  --accent-blue: #3b82f6;
+  --accent-red: #ef4444;
+  --admin-accent: #818cf8;
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --text-muted: #64748b;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+/* --- 1. PAGE SHELL & STATS --- */
+.admin-reports-page {
+  min-height: 100vh;
+  background: var(--admin-bg);
+  color: #fff;
+  padding-bottom: 100px;
+}
+
+.admin-reports-shell {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.admin-reports-hero { margin-bottom: 48px; }
+
+.admin-reports-eyebrow {
+  color: var(--admin-accent);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.admin-reports-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.admin-stat-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  padding: 24px;
+  border-radius: 16px;
+}
+
+.admin-stat-label {
+  display: block;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+/* --- 2. THE REPORT FEED (ROW ARCHITECTURE) --- */
+.admin-reports-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.report-summary-card {
+  background: #0d111a;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: 8px 1fr 280px; 
+  overflow: hidden;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.report-summary-card:hover {
+  border-color: rgba(129, 140, 248, 0.4);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  transform: translateX(4px);
+}
+
+/* Status Accents */
+.report-card-accent { background: #334155; }
+.report-summary-card.status-open .report-card-accent { background: #fbbf24; }
+.report-summary-card.status-reviewed .report-card-accent { background: #34d399; }
+.report-summary-card.status-escalated .report-card-accent { background: var(--accent-red); }
+
+/* --- 3. INTERNAL DATA BLOCKS --- */
+.report-card-main {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.report-card-data-strip {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.data-point {
+  display: flex;
+  flex-direction: column;
+}
+
+.data-point label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.data-point span {
+  font-size: 0.9rem;
+  color: #e2e8f0;
+  font-weight: 500;
+  font-family: var(--font-mono);
+}
+
+/* --- 4. ACTION SIDEBAR & ENFORCEMENT --- */
+.report-card-actions {
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 1px solid var(--glass-border);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.ghost-button {
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  color: #94a3b8;
+  padding: 10px 16px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+
+.ghost-button:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.ghost-button.danger-zone {
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(239, 68, 68, 0.03) 10px,
+    rgba(239, 68, 68, 0.03) 20px
+  );
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+
+.ghost-button.danger-zone:hover {
+  border-color: var(--accent-red);
+  background: rgba(239, 68, 68, 0.1);
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+}
+
+/* --- 5. REPEAT OFFENDER & STATUS PILLS --- */
+.admin-repeat-offender-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #450a0a;
+  border: 1px solid #dc2626;
+  color: #fecaca;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-badge.escalated {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--accent-red);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  animation: admin-pulse 2s infinite;
+}
+
+@keyframes admin-pulse {
+  0% { opacity: 1; box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 4px rgba(239, 68, 68, 0); }
+  100% { opacity: 1; }
+}
+
+/* --- 6. MODAL SYSTEM --- */
+.admin-report-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.admin-report-modal {
+  width: min(1100px, 95vw);
+  height: 85vh;
+  background: var(--admin-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  display: grid;
+  grid-template-rows: auto 1fr auto; 
+  overflow: hidden;
+  box-shadow: 0 50px 100px rgba(0,0,0,0.9);
+}
+
+.admin-report-modal-body {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  overflow: hidden;
+}
+
+.admin-report-sidebar {
+  background: rgba(255, 255, 255, 0.01);
+  padding: 24px;
+  border-left: 1px solid var(--glass-border);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Metadata Grid */
+.suspension-info-grid {
+  display: grid;
+  grid-template-columns: 85px 1fr;
+  gap: 8px 12px;
+  align-items: baseline;
+}
+
+.suspension-info-grid label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+/* Copy Toast Logic */
+.admin-report-block.is-copyable { position: relative; }
+.admin-copy-toast {
+  position: absolute;
+  top: 8px; right: 12px;
+  font-size: 0.6rem;
+  color: #34d399;
+  font-weight: 900;
+  animation: fade-up 1s forwards;
+}
+
+@keyframes fade-up {
+  0% { opacity: 0; transform: translateY(0); }
+  20% { opacity: 1; transform: translateY(-4px); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+/* --- 1. MODAL STATUS HEADER (The "Sync" Fix) --- */
+.admin-report-modal-top-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Editorial Status Prefix */
+.admin-report-modal-top-right::before {
+    content: "STATUS";
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+}
+
+/* Status Pill - Unified with Report Cards */
+.admin-report-status-is-dismissed,
+.admin-report-status-is-reviewed {
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid transparent;
+}
+
+.admin-report-status-is-dismissed { color: #94a3b8; }
+.admin-report-status-is-reviewed { 
+    color: #34d399; 
+    border-color: rgba(52, 211, 153, 0.1); 
+}
+
+/* --- 2. SUSPENSION GRID (The Layout Fix) --- */
+.admin-suspension-row {
+    display: grid;
+    grid-template-columns: 85px 1fr; /* Fixed width label for alignment */
+    align-items: baseline; 
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    gap: 16px;
+}
+
+.admin-suspension-row:last-child { border-bottom: none; }
+
+.admin-suspension-row span {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.admin-suspension-row strong {
+    font-size: 12px;
+    font-family: var(--font-mono);
+    color: #f1f5f9;
+    line-height: 1.5;
+    word-break: break-word;
+    text-align: right; /* Keeps values tight to the right edge */
+}
+
+/* Hide empty metadata fields */
+.admin-suspension-row:has(strong:empty),
+.admin-suspension-row strong:contains("None") {
+    display: none;
+}
+
+/* --- 3. RISK ANIMATION --- */
+.admin-repeat-offender-badge.critical {
+    animation: critical-border-flash 2.5s ease-in-out infinite;
+    border-left: 3px solid #ef4444; /* Added a sharp accent */
+}
+
+@keyframes critical-border-flash {
+    0%, 100% { border-color: rgba(239, 68, 68, 0.2); background: transparent; }
+    50% { border-color: rgba(239, 68, 68, 1); background: rgba(239, 68, 68, 0.05); }
+}
+/* --- 1. MODAL STATUS PILL (The "Sync" Fix) --- */
+.admin-report-modal-top-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Optional: Add the 'STATUS' label prefix for that editorial look */
+.admin-report-modal-top-right::before {
+    content: "STATUS";
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--text-muted);
+    letter-spacing: 0.12em;
+}
+
+.admin-report-status {
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+    border: 1px solid transparent;
+    background: rgba(255, 255, 255, 0.05);
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+}
+
+/* --- 2. STATE SPECIFIC COLORS --- */
+
+/* OPEN / PENDING */
+.admin-report-status.is-open {
+    color: #f87171; /* Soft Coral Red */
+    border-color: rgba(248, 113, 113, 0.2);
+}
+
+/* DISMISSED */
+.admin-report-status.is-dismissed {
+    color: #94a3b8; /* Muted Slate Blue-Gray */
+    background: rgba(148, 163, 184, 0.1);
+}
+
+/* REVIEWED / RESOLVED */
+.admin-report-status.is-reviewed {
+    color: #34d399; /* Emerald Green */
+    border-color: rgba(52, 211, 153, 0.2);
+}
+
+/* ESCALATED */
+.admin-report-status.is-escalated {
+    color: #fbbf24; /* Amber Warning */
+    border-color: rgba(251, 191, 36, 0.2);
+}
+
+/* --- 3. MODAL HEADER ALIGNMENT --- */
+.admin-report-modal-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 24px;
+}
+
+.admin-modal-close {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 4px;
+    transition: color 0.2s ease;
+}
+
+.admin-modal-close:hover {
+    color: #fff;
+}
+/* --- 1. ENHANCED TIMELINE DOTS --- */
+.admin-report-history-list::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 5px;
+    bottom: 5px;
+    width: 2px;
+    /* Brightened the thread line for better visibility */
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.history-dot {
+    position: absolute;
+    left: -22px; /* Slightly adjusted for larger dot */
+    top: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #1a1a1a; 
+    /* Increased border thickness and brightness */
+    border: 2px solid #525252; 
+    z-index: 2;
+    transition: all 0.2s ease;
+}
+
+/* Optional: Subtle glow for the dots to make them pop */
+.admin-report-history-item:hover .history-dot {
+    border-color: #fff;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+/* --- 2. IMPROVED TYPOGRAPHY & CONTRAST --- */
+
+/* Action Header (e.g., SAVED MODERATOR NOTE) */
+.admin-report-history-top strong {
+    display: block;
+    font-size: 13px; /* Scaled up from 11px */
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #ffffff;
+    margin-bottom: 6px;
+}
+
+/* Date/Time - Boosting contrast */
+.history-date {
+    display: block;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    color: rgba(255, 255, 255, 0.6); /* Lighter than muted for readability */
+    margin-bottom: 10px;
+}
+
+/* Moderator Label */
+.admin-report-history-meta {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 14px;
+}
+
+.admin-report-history-meta span {
+    background: rgba(255, 255, 255, 0.06); /* Slightly more opaque background */
+    padding: 3px 10px;
+    border-radius: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff; /* White text for the name itself */
+}
+
+/* --- 3. NOTE BOX REFINEMENT --- */
+.admin-report-history-note {
+    background: rgba(255, 255, 255, 0.04);
+    padding: 14px 18px;
+    border-radius: 4px;
+    /* Brightened the left accent border */
+    border-left: 3px solid rgba(255, 255, 255, 0.2);
+    font-size: 14px; /* Standard reading size */
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Fallback/Initial state scaling */
+.admin-report-history-item.is-fallback .empty-text {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    padding-left: 4px;
+}

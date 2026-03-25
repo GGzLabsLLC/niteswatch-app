@@ -1,0 +1,93 @@
+.mention {
+  color: #6366f1;
+  font-weight: 600;
+  background: rgba(99, 102, 241, 0.15);
+  padding: 2px 6px;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.25);
+}
+
+.mention-button {
+  background: transparent;
+  border: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.mention-button:hover {
+  text-decoration: underline;
+}
+
+.mention-menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 10px);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 14px;
+  background: #0f172a;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.35);
+  z-index: 30;
+}
+
+.mention-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #e5e7eb;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.mention-option:hover,
+.mention-option.active {
+  background: rgba(99, 102, 241, 0.14);
+}
+
+.mention-option-avatar {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.mention-option-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.mention-option-meta strong {
+  font-size: 14px;
+}
+
+.mention-option-meta small {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.chat-user-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.chat-user-trigger:hover strong {
+  text-decoration: underline;
+}

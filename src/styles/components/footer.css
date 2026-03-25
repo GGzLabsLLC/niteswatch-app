@@ -1,0 +1,25 @@
+.app-footer {
+  margin-top: 4rem;
+  padding: 3rem 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: center;
+}
+
+.footer-mission {
+  color: rgba(255, 255, 255, 0.5);
+  font-style: italic;
+  max-width: 400px;
+  margin: 0 auto 1.5rem;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  font-size: 0.8rem;
+}
+
+.safety-badge {
+  color: #5b8cff;
+  font-weight: 600;
+}

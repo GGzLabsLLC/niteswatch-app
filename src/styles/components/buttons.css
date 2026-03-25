@@ -1,0 +1,18 @@
+.create-room-form button,
+.room-card button,
+.ghost-button,
+.chat-input-row button,
+.login-form button {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 0;
+  background: #5b8cff;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ghost-button {
+  background: #161616;
+  border: 1px solid #2a2a2a;
+}
