@@ -62,8 +62,10 @@ export async function createAccount({
     const result = await createUserWithEmailAndPassword(auth, email, password);
     const firebaseUser = result.user;
 
+    // ✅ send verification email
     await sendEmailVerification(firebaseUser);
 
+    // ✅ create user profile
     await upsertUserProfile({
       uid: firebaseUser.uid,
       email: firebaseUser.email,
@@ -77,7 +79,12 @@ export async function createAccount({
     });
 
     const profile = await getUserProfile(firebaseUser.uid);
-    return normalizeAuthProfile(profile, firebaseUser);
+    const normalized = normalizeAuthProfile(profile, firebaseUser);
+
+    // 🔥🔥🔥 CRITICAL FIX
+    await signOut(auth);
+
+    return normalized;
   } catch (error) {
     console.error("[createAccount] failed:", error);
     throw error;
