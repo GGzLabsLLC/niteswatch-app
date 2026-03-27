@@ -2,10 +2,14 @@ import { useMemo, useState, useEffect, useRef } from "react";
 import { avatars } from "../utils/avatars";
 import { awakeReasons } from "../utils/awakeReasons";
 import { setSession } from "../utils/storage";
-import { createAccount, loginAccount, logoutAccount } from "../utils/auth";
+import {
+  createAccount,
+  loginAccount,
+  logoutAccount,
+  resendVerificationEmail,
+} from "../utils/auth";
 import { POLICY_VERSION } from "../constants/policies";
 import LegalAgreementFlowModal from "../components/LegalAgreementFlowModal";
-
 
 const vibeChips = [
   "Can't Sleep",
@@ -25,6 +29,8 @@ function Login({ onLogin }) {
   const [awakeReason, setAwakeReason] = useState("Insomnia");
   const [bio, setBio] = useState("");
   const [error, setError] = useState("");
+  const [verificationNotice, setVerificationNotice] = useState("");
+  const [isResendingVerification, setIsResendingVerification] = useState(false);
 
   const [ageConfirmed, setAgeConfirmed] = useState(false);
   const [showLegalFlow, setShowLegalFlow] = useState(false);
@@ -82,6 +88,7 @@ function Login({ onLogin }) {
   function switchMode(nextMode) {
     setMode(nextMode);
     setError("");
+    setVerificationNotice("");
     setShowLegalFlow(false);
   }
 
@@ -108,6 +115,7 @@ function Login({ onLogin }) {
 
   async function finalizeSignup() {
     setError("");
+    setVerificationNotice("");
     setIsSubmitting(true);
 
     try {
@@ -131,14 +139,49 @@ function Login({ onLogin }) {
       setShowLegalFlow(false);
       setMode("signin");
       setPassword("");
-      setError(
-        "Account created. Please check your email and verify your account before signing in."
+      setVerificationNotice(
+        `Account created. We sent a verification email to ${cleanEmail}. Please verify your email before signing in.`
       );
+      setError("");
     } catch (err) {
       setError(err?.message || "Something went wrong. Try again.");
+      setVerificationNotice("");
       setShowLegalFlow(false);
     } finally {
       setIsSubmitting(false);
+    }
+  }
+
+  async function handleResendVerification() {
+    if (!cleanEmail || !password.trim()) {
+      setError("Enter your email and password to resend verification.");
+      return;
+    }
+
+    setError("");
+    setIsResendingVerification(true);
+
+    try {
+      const account = await loginAccount(cleanEmail, password.trim());
+
+      if (account.emailVerified) {
+        await logoutAccount();
+        setVerificationNotice(
+          `That email is already verified. You can sign in now.`
+        );
+        return;
+      }
+
+      await resendVerificationEmail();
+      await logoutAccount();
+
+      setVerificationNotice(
+        `Verification email resent to ${cleanEmail}. Please check your inbox.`
+      );
+    } catch (err) {
+      setError(err?.message || "Could not resend verification email.");
+    } finally {
+      setIsResendingVerification(false);
     }
   }
 
@@ -147,6 +190,7 @@ function Login({ onLogin }) {
     if (!canSubmit) return;
 
     setError("");
+    setVerificationNotice("");
 
     try {
       if (isSignup) {
@@ -159,10 +203,13 @@ function Login({ onLogin }) {
       const account = await loginAccount(cleanEmail, password.trim());
 
       if (!account.emailVerified) {
-  await logoutAccount(); // 🔥 CRITICAL FIX
-  setError("Please verify your email before signing in.");
-  return;
-}
+        await logoutAccount();
+        setVerificationNotice(
+          `Your account exists, but the email for ${cleanEmail} has not been verified yet. Please check your inbox and verify your email before signing in.`
+        );
+        setError("");
+        return;
+      }
 
       const sessionUser = buildSessionUser(account);
 
@@ -358,6 +405,25 @@ function Login({ onLogin }) {
                       By creating an account, you will be asked to review and accept
                       the Terms of Use, Privacy Policy, and Community Guidelines.
                     </p>
+                  </div>
+                ) : null}
+
+                {verificationNotice ? (
+                  <div className="auth-notice" role="status">
+                    <p>{verificationNotice}</p>
+
+                    {mode === "signin" && cleanEmail && password.trim() ? (
+                      <button
+                        type="button"
+                        className="auth-notice-btn"
+                        onClick={handleResendVerification}
+                        disabled={isResendingVerification}
+                      >
+                        {isResendingVerification
+                          ? "Sending..."
+                          : "Resend verification email"}
+                      </button>
+                    ) : null}
                   </div>
                 ) : null}
 
