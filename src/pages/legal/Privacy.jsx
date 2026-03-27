@@ -83,7 +83,7 @@ function PrivacyContent() {
       <section>
         <h2>10. Contact</h2>
         <p>
-          For privacy questions, contact: support@lanparty.app
+          For privacy questions, contact: theniteswatch@gmail.com
         </p>
       </section>
     </>
