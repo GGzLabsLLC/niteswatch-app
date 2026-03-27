@@ -84,7 +84,7 @@ function TermsContent() {
       <section>
         <h2>10. Contact</h2>
         <p>
-          For questions about these Terms, contact: support@lanparty.app
+          For questions about these Terms, contact: theniteswatch@gmail.com
         </p>
       </section>
     </>
