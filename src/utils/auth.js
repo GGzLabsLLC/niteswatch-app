@@ -7,6 +7,7 @@ import {
   deleteUser,
   EmailAuthProvider,
   reauthenticateWithCredential,
+  sendEmailVerification,
 } from "firebase/auth";
 import {
   deleteDoc,
@@ -33,6 +34,7 @@ function normalizeAuthProfile(profile, firebaseUser) {
     id: uid,
     uid,
     email: profile?.email || firebaseUser?.email || "",
+    emailVerified: Boolean(firebaseUser?.emailVerified),
     handle: profile?.handle || profile?.username || "",
     avatar: profile?.avatar || "🌙",
     bio: profile?.bio || "",
@@ -60,6 +62,8 @@ export async function createAccount({
     const result = await createUserWithEmailAndPassword(auth, email, password);
     const firebaseUser = result.user;
 
+    await sendEmailVerification(firebaseUser);
+
     await upsertUserProfile({
       uid: firebaseUser.uid,
       email: firebaseUser.email,
@@ -84,6 +88,8 @@ export async function loginAccount(email, password) {
   const result = await signInWithEmailAndPassword(auth, email, password);
   const firebaseUser = result.user;
 
+  await firebaseUser.reload();
+
   try {
     await upsertUserProfile({
       uid: firebaseUser.uid,
@@ -94,7 +100,22 @@ export async function loginAccount(email, password) {
   }
 
   const profile = await getUserProfile(firebaseUser.uid);
-  return normalizeAuthProfile(profile, firebaseUser);
+  return normalizeAuthProfile(profile, auth.currentUser || firebaseUser);
+}
+
+export async function resendVerificationEmail() {
+  const user = auth.currentUser;
+
+  if (!user) {
+    throw new Error("No user is currently signed in.");
+  }
+
+  if (user.emailVerified) {
+    return { ok: true, alreadyVerified: true };
+  }
+
+  await sendEmailVerification(user);
+  return { ok: true };
 }
 
 export async function logoutAccount() {
@@ -208,11 +229,12 @@ export function watchAuthState(callback) {
     }
 
     try {
+      await firebaseUser.reload();
       const profile = await getUserProfile(firebaseUser.uid);
-      callback(normalizeAuthProfile(profile, firebaseUser));
+      callback(normalizeAuthProfile(profile, auth.currentUser || firebaseUser));
     } catch (error) {
       console.warn("[watchAuthState] profile read fallback:", error);
-      callback(normalizeAuthProfile(null, firebaseUser));
+      callback(normalizeAuthProfile(null, auth.currentUser || firebaseUser));
     }
   });
 }
