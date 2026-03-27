@@ -698,3 +698,41 @@
     min-height: 44px;
   }
 }
+.auth-notice {
+  margin: 0.25rem 0 0.25rem;
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(246, 196, 83, 0.2);
+  background: rgba(246, 196, 83, 0.08);
+  color: #f8fafc;
+}
+
+.auth-notice p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.auth-notice-btn {
+  margin-top: 0.75rem;
+  min-height: 38px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 12px;
+  background: #8b93ff;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.auth-notice-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  opacity: 0.98;
+}
+
+.auth-notice-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
