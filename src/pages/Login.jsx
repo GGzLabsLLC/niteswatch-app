@@ -2,9 +2,10 @@ import { useMemo, useState, useEffect, useRef } from "react";
 import { avatars } from "../utils/avatars";
 import { awakeReasons } from "../utils/awakeReasons";
 import { setSession } from "../utils/storage";
-import { createAccount, loginAccount } from "../utils/auth";
+import { createAccount, loginAccount, logoutAccount } from "../utils/auth";
 import { POLICY_VERSION } from "../constants/policies";
 import LegalAgreementFlowModal from "../components/LegalAgreementFlowModal";
+
 
 const vibeChips = [
   "Can't Sleep",
@@ -158,9 +159,10 @@ function Login({ onLogin }) {
       const account = await loginAccount(cleanEmail, password.trim());
 
       if (!account.emailVerified) {
-        setError("Please verify your email before signing in.");
-        return;
-      }
+  await logoutAccount(); // 🔥 CRITICAL FIX
+  setError("Please verify your email before signing in.");
+  return;
+}
 
       const sessionUser = buildSessionUser(account);
 
