@@ -91,6 +91,7 @@ function Login({ onLogin }) {
       id: account.id || account.uid,
       uid: account.uid || account.id,
       email: account.email || "",
+      emailVerified: Boolean(account.emailVerified),
       handle: account.handle || account.username || "",
       avatar: account.avatar || "🌙",
       bio: account.bio || "",
@@ -109,7 +110,7 @@ function Login({ onLogin }) {
     setIsSubmitting(true);
 
     try {
-      const account = await createAccount({
+      await createAccount({
         email: cleanEmail,
         password: password.trim(),
         username: cleanHandle.slice(0, 24),
@@ -126,11 +127,12 @@ function Login({ onLogin }) {
         },
       });
 
-      const sessionUser = buildSessionUser(account);
-
-      setSession(sessionUser);
-
-      onLogin(sessionUser);
+      setShowLegalFlow(false);
+      setMode("signin");
+      setPassword("");
+      setError(
+        "Account created. Please check your email and verify your account before signing in."
+      );
     } catch (err) {
       setError(err?.message || "Something went wrong. Try again.");
       setShowLegalFlow(false);
@@ -154,10 +156,15 @@ function Login({ onLogin }) {
       setIsSubmitting(true);
 
       const account = await loginAccount(cleanEmail, password.trim());
+
+      if (!account.emailVerified) {
+        setError("Please verify your email before signing in.");
+        return;
+      }
+
       const sessionUser = buildSessionUser(account);
 
       setSession(sessionUser);
-
       onLogin(sessionUser);
     } catch (err) {
       setError(err?.message || "Something went wrong. Try again.");
@@ -186,7 +193,6 @@ function Login({ onLogin }) {
             <h1 className="hero-title">
               We are the watchers of the nite.
               <br />
-              
             </h1>
 
             <p className="login-subcopy">
