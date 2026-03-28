@@ -11,6 +11,29 @@ import {
 import { POLICY_VERSION } from "../constants/policies";
 import LegalAgreementFlowModal from "../components/LegalAgreementFlowModal";
 
+function getAuthErrorMessage(err) {
+  const code = err?.code || "";
+
+  switch (code) {
+    case "auth/email-already-in-use":
+      return "That email is already registered. Try signing in instead.";
+    case "auth/invalid-email":
+      return "Please enter a valid email address.";
+    case "auth/weak-password":
+      return "Your password is too weak. Try a stronger one.";
+    case "auth/invalid-credential":
+    case "auth/wrong-password":
+    case "auth/user-not-found":
+      return "Incorrect email or password.";
+    case "auth/too-many-requests":
+      return "Too many attempts. Please wait a bit and try again.";
+    case "auth/network-request-failed":
+      return "Network error. Check your connection and try again.";
+    default:
+      return err?.message || "Something went wrong. Try again.";
+  }
+}
+
 const vibeChips = [
   "Can't Sleep",
   "Night Shift",
@@ -144,7 +167,10 @@ function Login({ onLogin }) {
       );
       setError("");
     } catch (err) {
-      setError(err?.message || "Something went wrong. Try again.");
+      setError(getAuthErrorMessage(err));
+      if (err?.code === "auth/email-already-in-use") {
+        setMode("signin");
+      }
       setVerificationNotice("");
       setShowLegalFlow(false);
     } finally {
@@ -159,6 +185,7 @@ function Login({ onLogin }) {
     }
 
     setError("");
+    setVerificationNotice("");
     setIsResendingVerification(true);
 
     try {
@@ -166,9 +193,7 @@ function Login({ onLogin }) {
 
       if (account.emailVerified) {
         await logoutAccount();
-        setVerificationNotice(
-          `That email is already verified. You can sign in now.`
-        );
+        setVerificationNotice("That email is already verified. You can sign in now.");
         return;
       }
 
@@ -179,7 +204,7 @@ function Login({ onLogin }) {
         `Verification email resent to ${cleanEmail}. Please check your inbox.`
       );
     } catch (err) {
-      setError(err?.message || "Could not resend verification email.");
+      setError(getAuthErrorMessage(err));
     } finally {
       setIsResendingVerification(false);
     }
@@ -207,16 +232,14 @@ function Login({ onLogin }) {
         setVerificationNotice(
           `Your account exists, but the email for ${cleanEmail} has not been verified yet. Please check your inbox and verify your email before signing in.`
         );
-        setError("");
         return;
       }
 
       const sessionUser = buildSessionUser(account);
-
       setSession(sessionUser);
       onLogin(sessionUser);
     } catch (err) {
-      setError(err?.message || "Something went wrong. Try again.");
+      setError(getAuthErrorMessage(err));
     } finally {
       setIsSubmitting(false);
     }
